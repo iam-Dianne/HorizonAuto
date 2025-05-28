@@ -1,5 +1,6 @@
 import { FaBell } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
+import { Link } from "react-router-dom";
 
 const Canvas: React.FC = () => {
   return (
@@ -10,7 +11,12 @@ const Canvas: React.FC = () => {
         </h1>
         <div className="flex items-center space-x-5">
           <FaBell className="text-gray-900" size={24} />
-          <FaCircleUser className="text-gray-900" size={24} />
+          <Link to={"/admin-profile"}>
+            <FaCircleUser
+              className="text-gray-900 hover:text-primary"
+              size={24}
+            />
+          </Link>
         </div>
       </header>
     </div>
