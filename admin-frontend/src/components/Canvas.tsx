@@ -12,10 +12,7 @@ const Canvas: React.FC = () => {
         <div className="flex items-center space-x-5">
           <FaBell className="text-gray-900" size={24} />
           <Link to={"/admin-profile"}>
-            <FaCircleUser
-              className="text-gray-900 hover:text-primary"
-              size={24}
-            />
+            <FaCircleUser className="text-gray-900 " size={24} />
           </Link>
         </div>
       </header>
