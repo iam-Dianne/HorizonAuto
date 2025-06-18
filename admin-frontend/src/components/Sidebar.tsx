@@ -2,9 +2,33 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { FaCar, FaFile, FaGear, FaHouse, FaUsers } from "react-icons/fa6";
 import { IoStatsChart } from "react-icons/io5";
 import { MdOutlinePayment } from "react-icons/md";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Sidebar: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/admin/admin-logout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(),
+        credentials: "include",
+      });
+
+      const result = await res.json();
+
+      if (result.success) {
+        toast.success(result.message);
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log("Logout failed: ", error);
+    }
+  };
+
   return (
     <div className="w-[300px] h-screen py-7 px-5 bg-gray-900 text-gray-200 flex flex-col">
       <div className="logo mb-10 flex justify-center">
@@ -79,8 +103,8 @@ const Sidebar: React.FC = () => {
               </Link>
             </li>
             <li>
-              <Link
-                to="/"
+              <button
+                onClick={handleLogout}
                 className="flex items-center hover:bg-gray-800 rounded-lg py-2 px-3 transition duration-200"
               >
                 <FaSignOutAlt
@@ -89,7 +113,7 @@ const Sidebar: React.FC = () => {
                   size={18}
                 />
                 <span>Log out</span>
-              </Link>
+              </button>
             </li>
           </ul>
         </div>

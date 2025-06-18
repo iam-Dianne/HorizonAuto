@@ -6,6 +6,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface SignUpFormState {
   firstname: string;
@@ -38,6 +40,7 @@ const schema = yup
 
 const CreateAdmin: React.FC = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [showConfirmPassword, setShowConfirmPassword] =
     useState<boolean>(false);
 
@@ -76,12 +79,15 @@ const CreateAdmin: React.FC = () => {
       const result = await res.json();
 
       if (result.success) {
-        return navigate("/");
+        toast.success(result.message);
+        return navigate("/login");
       } else {
+        setErrorMessage(result.message);
         console.log(result.message);
       }
     } catch (error) {
       console.log("An error occuured: ", error);
+      setErrorMessage("An unexpected error occured. Please try again later.");
     }
   };
 
@@ -93,6 +99,9 @@ const CreateAdmin: React.FC = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full flex flex-col items-center mt-5"
         >
+          {errorMessage && (
+            <div className="text-red-500 text-sm">{errorMessage}</div>
+          )}
           <div className="form-group w-full mt-3 flex gap-2">
             <input
               type="text"
