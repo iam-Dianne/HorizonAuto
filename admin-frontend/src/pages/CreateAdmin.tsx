@@ -223,7 +223,7 @@ const CreateAdmin: React.FC = () => {
               </p>
             )}
           </div>
-          <Button buttonName="Create Account" />
+          <Button buttonName="Create Account" type="submit" />
         </form>
       </div>
     </div>

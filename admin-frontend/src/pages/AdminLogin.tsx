@@ -48,6 +48,7 @@ const AdminLogin: React.FC = () => {
 
       if (result.success) {
         toast.success(result.message);
+        console.log("Logged in successfully");
         return navigate("/");
       } else {
         setErrorMessage(result.message);
@@ -112,7 +113,7 @@ const AdminLogin: React.FC = () => {
               </p>
             )}
           </div>
-          <Button buttonName="Log in" />
+          <Button buttonName="Log in" type="submit" />
         </form>
       </div>
     </div>

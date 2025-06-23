@@ -7,11 +7,15 @@ import {
 
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import AdminLayout from "./layouts/AdminLayout";
 import CreateAdmin from "./pages/CreateAdmin";
 import AdminLogin from "./pages/AdminLogin";
 import AdminProfile from "./pages/AdminProfile";
+
+import ManageCars from "./pages/ManageCars";
+import AddCar from "./pages/AddCar";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -20,8 +24,18 @@ const App = () => {
         <Route path="/login" element={<AdminLogin />} />
         <Route path="/create-admin" element={<CreateAdmin />} />
 
-        <Route path="/" element={<AdminLayout />} />
-        <Route path="/admin-profile" element={<AdminProfile />} />
+        <Route
+          path="/"
+          element={
+            <ProtectedRoute>
+              <AdminLayout />
+            </ProtectedRoute>
+          }
+        >
+          <Route path="/admin-profile" element={<AdminProfile />} />
+          <Route path="/cars" element={<ManageCars />} />
+          <Route path="/cars/add-new" element={<AddCar />} />
+        </Route>
       </>
     )
   );

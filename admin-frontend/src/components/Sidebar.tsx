@@ -14,7 +14,7 @@ const Sidebar: React.FC = () => {
       const res = await fetch("http://localhost:3000/admin/admin-logout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(),
+        body: JSON.stringify({}),
         credentials: "include",
       });
 
@@ -56,7 +56,7 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <Link
-              to="/"
+              to="/cars"
               className="flex items-center hover:bg-gray-800 rounded-lg py-2 px-3 transition duration-200"
             >
               <FaCar className="mr-3 items-center" size={18} />
