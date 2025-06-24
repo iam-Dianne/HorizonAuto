@@ -9,6 +9,7 @@ const Canvas: React.FC = () => {
     ["/", "Dashboard"],
     ["/cars", "Manage Cars"],
     ["/cars/add-new", "Add New Car"],
+    ["/cars/edit/:id", "Edit Car Details"],
   ]);
 
   const title = pageTitles.get(location.pathname) ?? "Page";

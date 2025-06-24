@@ -5,6 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ConfirmAlert from "../ConfirmAlert";
+import { useNavigate } from "react-router-dom";
 
 interface Car {
   id: number;
@@ -23,6 +24,7 @@ const CarsTable = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -125,7 +127,10 @@ const CarsTable = () => {
             {car.is_available ? "Available" : "Unavailable"}
           </td>
           <td className="text-center py-2 flex justify-center items-center gap-3">
-            <button className="p-2 rounded-lg bg-blue-400">
+            <button
+              onClick={() => navigate(`/cars/edit/${car.id}`)}
+              className="p-2 rounded-lg bg-blue-400 hover:bg-blue-500 cursor-pointer "
+            >
               <MdEdit size={21} />
             </button>
             {/* DELETE BUTTONNN */}

@@ -16,6 +16,7 @@ import AdminProfile from "./pages/AdminProfile";
 
 import ManageCars from "./pages/ManageCars";
 import AddCar from "./pages/AddCar";
+import EditCar from "./pages/EditCar";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -35,6 +36,7 @@ const App = () => {
           <Route path="/admin-profile" element={<AdminProfile />} />
           <Route path="/cars" element={<ManageCars />} />
           <Route path="/cars/add-new" element={<AddCar />} />
+          <Route path="/cars/edit/:id" element={<EditCar />} />
         </Route>
       </>
     )

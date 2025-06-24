@@ -1,12 +1,13 @@
 import React from "react";
 import Button from "../components/Button";
-import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Spinner from "../components/Spinner";
 
 interface RegisterCarState {
   plate_number: string;
@@ -35,22 +36,50 @@ const schema = yup
   })
   .required();
 
-const AddCar: React.FC = () => {
+const EditCar: React.FC = () => {
   const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(true);
+
+  const { id } = useParams();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<RegisterCarState>({
     resolver: yupResolver(schema),
   });
 
+  useEffect(() => {
+    const fetchCar = async () => {
+      try {
+        const res = await fetch(`http://localhost:3000/cars/${id}`, {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        });
+
+        const result = await res.json();
+        console.log("Fetched result: ", result.car);
+
+        if (result.success && result.car) {
+          reset(result.car); // populate all fields
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error("Error fetching Cars: ", error);
+        setErrorMessage("Error fetching Cars.");
+      }
+    };
+    fetchCar();
+  }, [id, reset]);
+
   const onSubmit = async (data: RegisterCarState) => {
     try {
-      const res = await fetch("http://localhost:3000/cars/add-car", {
-        method: "POST",
+      const res = await fetch(`http://localhost:3000/cars/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           plate_number: data.plate_number,
@@ -79,13 +108,17 @@ const AddCar: React.FC = () => {
     }
   };
 
+  if (isLoading) {
+    <Spinner />;
+  }
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="w-full flex flex-col items-center justify-center mt-5 text-gray-800"
     >
       <p className="text-sm text-gray-600 mt-1 mb-3">
-        Fill out the details below to register a new vehicle.
+        Fill out the details below to update current vehicle.
       </p>
       {errorMessage && (
         <div className="text-red-500 text-sm">{errorMessage}</div>
@@ -185,7 +218,7 @@ const AddCar: React.FC = () => {
         )}
       </div>
       <div className="form-group w-[500px] mt-3 flex items-center gap-4">
-        <Button buttonName="Add Car" type="submit" buttonWidth="w-1/2" />
+        <Button buttonName="Update Car" type="submit" buttonWidth="w-1/2" />
         <Button
           buttonName="Cancel"
           buttonWidth="w-1/2"
@@ -203,4 +236,4 @@ const AddCar: React.FC = () => {
   );
 };
 
-export default AddCar;
+export default EditCar;
