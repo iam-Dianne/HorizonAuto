@@ -68,3 +68,33 @@ export const getCars = (req, res) => {
     });
   });
 };
+
+export const deleteCar = (req, res) => {
+  const carId = req.params.id;
+  if (!carId) {
+    return res
+      .status(400)
+      .json({ success: false, message: "Car ID is required" });
+  }
+
+  const sql = `DELETE FROM cars WHERE id = ?`;
+
+  pool.query(sql, [carId], (err, result) => {
+    if (err) {
+      console.log("Error deleting car: ", err);
+      return res.status(500).json({
+        success: false,
+        message: "Error deleting car",
+      });
+    }
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "Car not found" });
+    }
+
+    console.log("Car deleted successfully");
+    return res
+      .status(201)
+      .json({ success: true, message: "Car deleted successfully" });
+  });
+};

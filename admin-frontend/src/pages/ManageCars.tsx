@@ -5,7 +5,7 @@ import CarsTable from "../components/tables/CarsTable";
 const ManageCars = () => {
   return (
     <section>
-      <div className="create flex justify-end mb-5">
+      <div className="create flex justify-end mb-5 text-gray-800">
         <Link
           to="/cars/add-new"
           className="bg-gray-300 hover:bg-gray-400 py-1 px-3 rounded-lg"
