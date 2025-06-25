@@ -1,11 +1,12 @@
 import React, { type JSX } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import Spinner from "./Spinner";
 
 const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -16,9 +17,19 @@ const ProtectedRoute = ({ children }: { children: JSX.Element }) => {
         });
 
         const result = await res.json();
-        setIsAuthenticated(result.success);
+
+        if (result.success) {
+          setIsAuthenticated(true);
+        } else {
+          setIsAuthenticated(false);
+          navigate("/login");
+        }
+
+        // setIsAuthenticated(result.success);
       } catch (error) {
+        console.log("Authentication failed: ", error);
         setIsAuthenticated(false);
+        navigate("/login");
       } finally {
         setIsLoading(false);
       }

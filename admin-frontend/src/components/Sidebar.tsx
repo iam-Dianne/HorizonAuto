@@ -47,11 +47,11 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <Link
-              to="/"
+              to="/rentals"
               className="flex items-center hover:bg-gray-800 rounded-lg py-2 px-3 transition duration-200"
             >
               <FaFile className="mr-3 items-center" size={18} />
-              <span>Bookings</span>
+              <span>Rentals</span>
             </Link>
           </li>
           <li>

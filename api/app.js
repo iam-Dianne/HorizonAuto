@@ -4,6 +4,7 @@ import cors from "cors";
 import session from "express-session";
 import adminRoutes from "./routes/adminRoutes.js";
 import carRoutes from "./routes/carRoutes.js";
+import rentalRoutes from "./routes/rentalRoutes.js";
 import { isAdminLoggedIn } from "./middlewares/authMiddleware.js";
 
 const app = express();
@@ -31,5 +32,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/admin", adminRoutes);
 app.use("/cars", isAdminLoggedIn, carRoutes);
+app.use("/rentals", isAdminLoggedIn, rentalRoutes);
 
 export default app;

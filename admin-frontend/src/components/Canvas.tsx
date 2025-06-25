@@ -1,15 +1,18 @@
 import { FaBell } from "react-icons/fa";
 import { FaCircleUser } from "react-icons/fa6";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, Outlet, useLocation, useParams } from "react-router-dom";
 
 const Canvas: React.FC = () => {
   const location = useLocation();
+  const { id } = useParams();
 
   const pageTitles = new Map<string, string>([
     ["/", "Dashboard"],
     ["/cars", "Manage Cars"],
     ["/cars/add-new", "Add New Car"],
-    ["/cars/edit/:id", "Edit Car Details"],
+    [`/cars/edit/${id}`, "Edit Car Details"],
+    ["/rentals", "Manage Rentals"],
+    ["/rentals/add-new", "New Rental"],
   ]);
 
   const title = pageTitles.get(location.pathname) ?? "Page";
