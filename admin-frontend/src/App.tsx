@@ -19,6 +19,7 @@ import AddCar from "./pages/AddCar";
 import EditCar from "./pages/EditCar";
 import ManageRentals from "./pages/ManageRentals";
 import AddRental from "./pages/AddRental";
+import Services from "./pages/Services";
 
 const App = () => {
   const router = createBrowserRouter(
@@ -41,6 +42,7 @@ const App = () => {
           <Route path="/cars/edit/:id" element={<EditCar />} />
           <Route path="/rentals" element={<ManageRentals />} />
           <Route path="/rentals/add-new" element={<AddRental />} />
+          <Route path="/services" element={<Services />} />
         </Route>
       </>
     )

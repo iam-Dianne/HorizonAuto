@@ -44,6 +44,7 @@ const AddRental: React.FC = () => {
   const [selectedCarId, setSelectedCarId] = useState<number | "">("");
   const [startDate, setStartDate] = useState<string>("");
   const [endDate, setEndDate] = useState<string>("");
+  const [currentStep, setCurrentStep] = useState(1);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const navigate = useNavigate();
 
@@ -54,6 +55,14 @@ const AddRental: React.FC = () => {
   } = useForm<RentalForm>({
     resolver: yupResolver(schema),
   });
+
+  const handleNext = () => {
+    setCurrentStep((prevStep) => prevStep + 1);
+  };
+
+  const handlePrevious = () => {
+    setCurrentStep((prevStep) => prevStep - 1);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,145 +140,293 @@ const AddRental: React.FC = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full flex flex-col items-center justify-center mt-5 text-gray-800"
-    >
-      <p className="text-sm text-gray-600 mt-1 mb-3">
-        Fill out the details below to create a new rental.
-      </p>
+    <section>
+      {/* customer info and schedule*/}
+      {currentStep === 1 && (
+        <form
+          // onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex flex-col items-center justify-center mt-5 text-gray-800"
+        >
+          <p className="text-sm text-gray-600 mt-1 mb-3">
+            Fill out the details below to create a new rental.
+          </p>
 
-      <div className="form-group w-[500px] mt-3">
-        <div className="flex items-center">
-          <label className="w-1/4">Renter Name:</label>
-          <input
-            type="text"
-            id="renter_name"
-            {...register("renter_name")}
-            className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            placeholder="Jane Doe"
-          />
-        </div>
-        {errors.renter_name && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.renter_name.message}
-          </p>
-        )}
-      </div>
-      <div className="form-group w-[500px] mt-3">
-        <div className="flex items-center">
-          <label className="w-1/4">Contact No:</label>
-          <input
-            type="text"
-            id="contact_number"
-            {...register("contact_number")}
-            className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            placeholder="09XX XXX XXXX"
-          />
-          {errors.contact_number && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.contact_number.message}
-            </p>
-          )}
-        </div>
-      </div>
-      <div className="form-group w-[500px] mt-3">
-        <div className="flex items-center">
-          <label className="w-1/4">Email:</label>
-          <input
-            type="email"
-            id="email"
-            {...register("email")}
-            className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            placeholder="Jane Doe"
-          />
-        </div>
-        {errors.email && (
-          <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
-        )}
-      </div>
-      <div className="form-group w-[500px] mt-3">
-        <div className="flex items-center">
-          <label className="w-1/4">Car:</label>
-          <select
-            value={selectedCarId}
-            className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            {...register("car")}
-            onChange={(e) =>
-              setSelectedCarId(e.target.value ? Number(e.target.value) : "")
-            }
-          >
-            <option value="">Select a car</option>
-            {cars.map((car) => (
-              <option key={car.id} value={car.id}>
-                {`${car.plate_number} — ${car.brand} ${car.model}`}
-              </option>
-            ))}
-          </select>
-        </div>
-        {errors.car && (
-          <p className="text-red-500 text-sm mt-1">{errors.car.message}</p>
-        )}
-      </div>
-      <div className="form-group w-[500px] mt-3">
-        <div className="flex items-center">
-          <label className="w-1/4">Start Date:</label>
-          <input
-            type="date"
-            id="start_date"
-            {...register("start_date")}
-            className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            value={startDate}
-            onChange={(e) => setStartDate(e.target.value)}
-          />
-        </div>
-        {errors.start_date && (
-          <p className="text-red-500 text-sm mt-1">
-            {errors.start_date.message}
-          </p>
-        )}
-        <div className="form-group w-[500px] mt-3">
-          <div className="flex items-center">
-            <label className="w-1/4">End Date:</label>
-            <input
-              type="date"
-              id="end_date"
-              {...register("end_date")}
-              className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-              value={endDate}
-              onChange={(e) => setEndDate(e.target.value)}
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/4">Renter Name:</label>
+              <input
+                type="text"
+                id="renter_name"
+                {...register("renter_name")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="Jane Doe"
+              />
+            </div>
+            {errors.renter_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.renter_name.message}
+              </p>
+            )}
+          </div>
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/4">Contact No:</label>
+              <input
+                type="text"
+                id="contact_number"
+                {...register("contact_number")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="09XX XXX XXXX"
+              />
+              {errors.contact_number && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.contact_number.message}
+                </p>
+              )}
+            </div>
+          </div>
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/4">Email:</label>
+              <input
+                type="email"
+                id="email"
+                {...register("email")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="janedoe@example.com"
+              />
+            </div>
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
+          </div>
+
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/4">Start Date:</label>
+              <input
+                type="date"
+                id="start_date"
+                {...register("start_date")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+              />
+            </div>
+            {errors.start_date && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.start_date.message}
+              </p>
+            )}
+            <div className="form-group w-[500px] mt-3">
+              <div className="flex items-center">
+                <label className="w-1/4">End Date:</label>
+                <input
+                  type="date"
+                  id="end_date"
+                  {...register("end_date")}
+                  className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                />
+              </div>
+              {errors.end_date && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.end_date.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group w-[500px] mt-3 flex items-center gap-4">
+            <Button
+              buttonName="Next"
+              type="button"
+              buttonWidth="w-full"
+              onClickFunction={handleNext}
             />
           </div>
-          {errors.end_date && (
-            <p className="text-red-500 text-sm mt-1">
-              {errors.end_date.message}
-            </p>
-          )}
-        </div>
-      </div>
-      {selectedCarId && startDate && endDate && (
-        <div className="mt-8 font-medium">
-          Total Price:{" "}
-          <span className="text-primary-light">₱ {totalPrice.toFixed(2)}</span>
-        </div>
+        </form>
       )}
 
-      <div className="form-group w-[500px] mt-3 flex items-center gap-4">
-        <Button buttonName="Submit Rental" type="submit" buttonWidth="w-1/2" />
-        <Button
-          buttonName="Cancel"
-          buttonWidth="w-1/2"
-          fontColor="text-gray-800"
-          buttonColor="none"
-          buttonHoverColor="hover:bg-gray-300"
-          border="border border-gray-400"
-          onClickFunction={() => {
-            navigate("/rentals");
-          }}
-          type="button"
-        />
-      </div>
-    </form>
+      {currentStep === 2 && (
+        <form
+          // onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex flex-col items-center justify-center mt-5 text-gray-800"
+        >
+          <p className="text-sm text-gray-600 mt-1 mb-3">
+            Choose where to pickup and dropoff the rented vehicle.
+          </p>
+
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/3">Pickup Location:</label>
+              <input
+                type="text"
+                id="renter_name"
+                {...register("renter_name")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="123 Brgy. West Tapinac, Olongapo City"
+              />
+            </div>
+            {errors.renter_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.renter_name.message}
+              </p>
+            )}
+          </div>
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/3">Dropoff Location:</label>
+              <input
+                type="text"
+                id="contact_number"
+                {...register("contact_number")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="321 Horizon Motors, Olongapo City"
+              />
+              {errors.contact_number && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.contact_number.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group w-[500px] mt-10">
+            <div className="flex items-center">
+              <label className="w-1/3">Available Vehicles:</label>
+              <select
+                value={selectedCarId}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                {...register("car")}
+                onChange={(e) =>
+                  setSelectedCarId(e.target.value ? Number(e.target.value) : "")
+                }
+              >
+                <option value="">Select a car</option>
+                {cars.map((car) => (
+                  <option key={car.id} value={car.id}>
+                    {`${car.plate_number} — ${car.brand} ${car.model}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.car && (
+              <p className="text-red-500 text-sm mt-1">{errors.car.message}</p>
+            )}
+          </div>
+
+          <div className="form-group w-[500px] mt-3 flex items-center gap-4">
+            <Button
+              buttonName="Back"
+              buttonWidth="w-1/2"
+              fontColor="text-gray-800"
+              buttonColor="none"
+              buttonHoverColor="hover:bg-gray-300"
+              border="border border-gray-400"
+              onClickFunction={handlePrevious}
+              type="button"
+            />
+            <Button
+              buttonName="Next"
+              buttonWidth="w-1/2"
+              onClickFunction={handleNext}
+            />
+          </div>
+        </form>
+      )}
+
+      {currentStep === 3 && (
+        <form
+          // onSubmit={handleSubmit(onSubmit)}
+          className="w-full flex flex-col items-center justify-center mt-5 text-gray-800"
+        >
+          <p className="text-sm text-gray-600 mt-1 mb-3">
+            Choose the services you need.
+          </p>
+
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/3">Pickup Location:</label>
+              <input
+                type="text"
+                id="renter_name"
+                {...register("renter_name")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="123 Brgy. West Tapinac, Olongapo City"
+              />
+            </div>
+            {errors.renter_name && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.renter_name.message}
+              </p>
+            )}
+          </div>
+          <div className="form-group w-[500px] mt-3">
+            <div className="flex items-center">
+              <label className="w-1/3">Dropoff Location:</label>
+              <input
+                type="text"
+                id="contact_number"
+                {...register("contact_number")}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                placeholder="321 Horizon Motors, Olongapo City"
+              />
+              {errors.contact_number && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.contact_number.message}
+                </p>
+              )}
+            </div>
+          </div>
+
+          <div className="form-group w-[500px] mt-10">
+            <div className="flex items-center">
+              <label className="w-1/3">Available Vehicles:</label>
+              <select
+                value={selectedCarId}
+                className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
+                {...register("car")}
+                onChange={(e) =>
+                  setSelectedCarId(e.target.value ? Number(e.target.value) : "")
+                }
+              >
+                <option value="">Select a car</option>
+                {cars.map((car) => (
+                  <option key={car.id} value={car.id}>
+                    {`${car.plate_number} — ${car.brand} ${car.model}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {errors.car && (
+              <p className="text-red-500 text-sm mt-1">{errors.car.message}</p>
+            )}
+          </div>
+
+          <div className="form-group w-[500px] mt-3 flex items-center gap-4">
+            <Button
+              buttonName="Back"
+              buttonWidth="w-1/2"
+              fontColor="text-gray-800"
+              buttonColor="none"
+              buttonHoverColor="hover:bg-gray-300"
+              border="border border-gray-400"
+              onClickFunction={handlePrevious}
+              type="button"
+            />
+            <Button
+              buttonName="Next"
+              buttonWidth="w-1/2"
+              onClickFunction={handleNext}
+            />
+          </div>
+        </form>
+      )}
+    </section>
   );
 };
 

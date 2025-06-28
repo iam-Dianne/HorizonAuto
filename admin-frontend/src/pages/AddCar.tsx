@@ -64,6 +64,7 @@ const AddCar: React.FC = () => {
       });
 
       const result = await res.json();
+      console.log(result);
 
       if (result.success) {
         toast.success(result.message);
@@ -140,13 +141,16 @@ const AddCar: React.FC = () => {
       <div className="form-group w-[500px] mt-3 ">
         <div className="flex items-center">
           <label className="w-1/4">Type:</label>
-          <input
-            type="text"
+          <select
             id="type"
-            {...register("type")}
             className="h-9 rounded-md px-3 bg-gray-100 w-3/4"
-            placeholder="Sedan"
-          />
+            {...register("type")}
+          >
+            <option value="">Select a type</option>
+            <option value="small">Small</option>
+            <option value="medium">Medium</option>
+            <option value="large">Large</option>
+          </select>
         </div>
         {errors.type && (
           <p className="text-red-500 text-sm mt-1">{errors.type.message}</p>

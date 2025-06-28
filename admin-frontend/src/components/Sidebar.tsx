@@ -1,5 +1,5 @@
-import { FaSignOutAlt } from "react-icons/fa";
-import { FaCar, FaFile, FaGear, FaHouse, FaUsers } from "react-icons/fa6";
+import { FaSignOutAlt, FaTools } from "react-icons/fa";
+import { FaCar, FaFile, FaGear, FaHouse } from "react-icons/fa6";
 import { IoStatsChart } from "react-icons/io5";
 import { MdOutlinePayment } from "react-icons/md";
 import { Link, useNavigate } from "react-router-dom";
@@ -65,11 +65,11 @@ const Sidebar: React.FC = () => {
           </li>
           <li>
             <Link
-              to="/"
+              to="/services"
               className="flex items-center hover:bg-gray-800 rounded-lg py-2 px-3 transition duration-200"
             >
-              <FaUsers className="mr-3 items-center" size={18} />
-              <span>Customers</span>
+              <FaTools className="mr-3 items-center" size={18} />
+              <span>Services</span>
             </Link>
           </li>
           <li>
